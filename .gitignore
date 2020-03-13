@@ -1,6 +1,7 @@
 /.idea/
 /.bloop/
 /.metals/
+/.bsp/
 
 /build/
 /out/
