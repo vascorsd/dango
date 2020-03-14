@@ -10,7 +10,7 @@ MILL_INSTALLED=`which $MILL 2>/dev/null`
 if [ -z "$MILL_INSTALLED" ] ; then
     echo "Not found, downloading..."
 
-    ./bins/install-mill.sh $MILL_WANT_VERSION
+    ./scripts/install-mill.sh $MILL_WANT_VERSION
 
     echo "Checking if in PATH..."
 

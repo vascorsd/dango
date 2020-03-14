@@ -1,4 +1,4 @@
-set shell := ["bash", "-c"]
+set shell := ["bash", "-c", "-x"]
 
 # tools bins:
 MILL      := 'mill'
@@ -15,17 +15,20 @@ MILL_WANT_VERSION := '0.6.1'
 clean-compile: prepare clean reload build
 
 prepare:
-    ./bins/check-installed-mill.sh {{MILL_WANT_VERSION}}
+    ./scripts/check-installed-mill.sh {{MILL_WANT_VERSION}}
 
 reload:
-    # BSP aka intellij project target
-    {{MILL}} -i mill.contrib.BSP/install
+    # generate bsp stuff
+    {{MILL}} mill.contrib.BSP/install
+
+    # generate intellij stuff
+    {{MILL}} mill.scalalib.GenIdea/idea
 
 # supply a specific TARGET to not build everything
 build TARGET='all':
-    @if [ {{TARGET}} == all ]; then \
+    @if [ "{{TARGET}}" == "all" ]; then \
         echo 'Building all targets...'; \
-        {{MILL}} all _.compile; \
+        {{MILL}} all _._.compile; \
     else \
         echo 'Building only specified target...'; \
         {{MILL}} {{TARGET}}.compile; \
@@ -34,18 +37,36 @@ build TARGET='all':
 # supply MODE=all really clean the workspace as if fresh git clone
 clean MODE='':
     @echo 'Removing build related artifacts...'
-    @rm --recursive --force --verbose build .bloop .idea out
+    @rm --recursive --force --verbose build out
 
-    @if [ {{MODE}} == all ]; then \
+    @if [ "{{MODE}}" == "all" ]; then \
         echo 'Removing extra stuff from workspace...'; \
-        rm --recursive --force --verbose .scalafix-rules/*; \
+        rm --recursive --force --verbose .scalafix-rules .bloop .idea .idea_modules .bsp; \
     fi
 
 run APP: build
     {{MILL}} {{APP}}.run
 
-check-format:
-    {{SCALAFMT}} --git true --list --check --stdout app core
+check-format TARGET='all':
+    # using mill has integrated scalafmt, using it instead of system command
+    #{{SCALAFMT}} --git true --list --check --stdout app core
+
+    # mill scalafmt integration. OK, it works, but completely sucks since I can't
+    # use command line options to show on the cli what files are wrong!!!
+    # just says good or not -.-".
+
+    @if [ "{{TARGET}}" == "all" ]; then \
+        {{MILL}} all _.checkFormat; \
+    else \
+        {{MILL}} {{TARGET}}.checkFormat; \
+    fi
+
+format TARGET='all':
+    @if [ "{{TARGET}}" == "all" ]; then \
+        {{MILL}} all _.reformat; \
+    else \
+        {{MILL}} {{TARGET}}.reformat; \
+    fi
 
 check-lint:
     #!/usr/bin/env bash
@@ -57,4 +78,5 @@ check-lint:
 
     {{SCALAFIX}} --tool-classpath="$TOOL_CLASSPATH" --auto-classpath --check --stdout app core
 
-
+check-updates:
+    {{MILL}} mill.scalalib.Dependency/updates
