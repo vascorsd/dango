@@ -21,6 +21,9 @@ reload:
     # generate bsp stuff
     {{MILL}} mill.contrib.BSP/install
 
+    # generate bloop stuff
+    {{MILL}} mill.contrib.Bloop/install
+
     # generate intellij stuff
     {{MILL}} mill.scalalib.GenIdea/idea
 
@@ -48,22 +51,22 @@ run APP: build
     {{MILL}} {{APP}}.run
 
 check-format TARGET='all':
-    # using mill has integrated scalafmt, using it instead of system command
-    #{{SCALAFMT}} --git true --list --check --stdout app core
+    # command line tool.
+    {{SCALAFMT}} --git true --list --check --stdout bin lib
 
     # mill scalafmt integration. OK, it works, but completely sucks since I can't
     # use command line options to show on the cli what files are wrong!!!
     # just says good or not -.-".
 
-    @if [ "{{TARGET}}" == "all" ]; then \
-        {{MILL}} all _.checkFormat; \
-    else \
-        {{MILL}} {{TARGET}}.checkFormat; \
-    fi
+    #@if [ "{{TARGET}}" == "all" ]; then \
+    #    {{MILL}} all _.checkFormat; \
+    #else \
+    #    {{MILL}} {{TARGET}}.checkFormat; \
+    #fi
 
 format TARGET='all':
     @if [ "{{TARGET}}" == "all" ]; then \
-        {{MILL}} all _.reformat; \
+        {{MILL}} all _._.reformat; \
     else \
         {{MILL}} {{TARGET}}.reformat; \
     fi
@@ -73,10 +76,11 @@ check-lint:
     TOOL_CLASSPATH="$(
         {{COURSIER}} fetch --cache .scalafix-rules \
             com.github.vovapolu:scaluzzi_2.12:0.1.4.1 \
+            com.nequissimus::sort-imports:0.3.2 \
             -p
     )"
 
-    {{SCALAFIX}} --tool-classpath="$TOOL_CLASSPATH" --auto-classpath --check --stdout app core
+    {{SCALAFIX}} --tool-classpath="$TOOL_CLASSPATH" --auto-classpath --check --stdout bin lib
 
 check-updates:
     {{MILL}} mill.scalalib.Dependency/updates

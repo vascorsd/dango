@@ -2,6 +2,7 @@ import mill._
 import scalalib._
 import scalafmt._
 import $ivy.`com.lihaoyi::mill-contrib-bsp:0.6.1`
+import $ivy.`com.lihaoyi::mill-contrib-bloop:0.6.1`
 
 object Dependencies {
 
