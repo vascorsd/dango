@@ -1,6 +1,6 @@
 package dango
 
-import zio.{App, ZIO}
+import zio.{App, Runtime, ZIO}
 import zio.console._
 
 object DangoCLI extends App {
@@ -17,6 +17,10 @@ object DangoCLI extends App {
 }
 
 object x {
+  import zio.console.{putStrLn, Console => ZConsole}
+  import zio.{RIO, Runtime => ZRuntime, Task => ZTask, UIO}
+
+  ZRuntime.unsafeFromLayer(ZConsole.live)
   case class Dad(mom: y.Mom)
 }
 
