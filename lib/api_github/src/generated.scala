@@ -1,4 +1,5 @@
 import Types._
+
 import caliban.schema.Annotations._
 
 object Types {

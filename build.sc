@@ -265,12 +265,13 @@ trait CalibanCodegenModule extends ScalaModule {
         .map(writeInputValue(_, typedef))
         .mkString(", ")})"""
 
+
     def writeEnum(typedef: EnumTypeDefinition): String =
       s"""${writeDescription(typedef.description)}sealed trait ${typedef.name} extends scala.Product with scala.Serializable
 
           object ${typedef.name} {
             ${typedef.enumValuesDefinition
-        .map(v => s"${writeDescription(v.description)}case object ${v.enumValue} extends ${typedef.name}")
+        .map(v => s"${writeDescription(v.description)}case object ${protectedReservedName(v.enumValue)} extends ${typedef.name}")
         .mkString("\n")}
           }
        """
