@@ -1,7 +1,10 @@
 package dango
 
+import dango.generated.GithubApi
 import zio._
 
 object test {
-  def x = {}
+  def x = {
+    GithubApi.Release
+  }
 }

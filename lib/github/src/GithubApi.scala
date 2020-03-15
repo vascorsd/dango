@@ -1,3 +1,5 @@
+package dango.generated
+
 import caliban.client.CalibanClientError.DecodingError
 import caliban.client.FieldBuilder._
 import caliban.client.SelectionBuilder._
@@ -5,7 +7,7 @@ import caliban.client._
 import caliban.client.Operations._
 import caliban.client.Value._
 
-object Client {
+object GithubApi {
 
   type Date = String
 
