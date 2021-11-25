@@ -1,10 +1,15 @@
-/.idea/
-/.idea_modules/
-/.bloop/
-/.metals/
-/.bsp/
+# ides, editors
+.idea/
+.vscode/
+.metals/
 
-/build/
-/out/
+# build tooling
+.bloop/
+.bsp/
 
-/.scalafix-rules/
+# general build artifacts
+target/
+.target/
+build/
+out/
+
