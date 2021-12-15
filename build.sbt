@@ -1,6 +1,14 @@
 lazy val dango = project
   .in(file("."))
-  .aggregate(bin, core)
+  .aggregate(
+    bin,
+    core,
+    gitlab,
+    github,
+    gitea,
+    gogs,
+    sourcehut
+  )
   .settings(
     publish / skip := true
   )
@@ -10,7 +18,7 @@ lazy val bin = project
   .settings(
     commonSettings
   )
-  .dependsOn(core)
+  .dependsOn(core, gitea)
 
 lazy val core = project
   .in(file("lib/core"))
@@ -23,7 +31,6 @@ lazy val gitlab = project
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.client" %% "core" % "2.0.5"
     )
   )
 
@@ -32,7 +39,6 @@ lazy val github = project
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.client" %% "core" % "2.0.5"
     )
   )
 
@@ -41,7 +47,6 @@ lazy val gitea = project
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.client" %% "core" % "2.0.5"
     )
   )
 
@@ -50,7 +55,6 @@ lazy val gogs = project
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.client" %% "core" % "2.0.5"
     )
   )
 
@@ -59,14 +63,13 @@ lazy val sourcehut = project
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(
-      "com.softwaremill.sttp.client" %% "core" % "2.0.5"
     )
   )
 
 lazy val commonSettings = Seq(
   // basic sanity
-  fork := true,
-  connectInput := true,
+  fork           := true,
+  connectInput   := true,
   outputStrategy := Some(StdoutOutput),
   // test settings
   Test / parallelExecution := true,
@@ -80,8 +83,10 @@ lazy val commonSettings = Seq(
     "-deprecation",
     "-feature",
     "-explaintypes",
-    // magic ?
-    "-Ymacro-annotations",
+    // magic ? not really sure what it does or when is need. more scala yonkers.
+    // ok, seems that if I have any code that USES macro expansions, then this needs
+    // to be on. https://docs.scala-lang.org/overviews/macros/annotations.html
+    // "-Ymacro-annotations",
     // warns
     "-Werror",
     "-Wnumeric-widen",
@@ -89,24 +94,34 @@ lazy val commonSettings = Seq(
     "-Wdead-code",
     "-Wextra-implicit",
     // lints
-    "-Xlint"
+    "-Xlint",
+    // yet another not surpring scala bug yet again...
+    // without this circe semiauto functions trigger
+    // "Block result was adapted via implicit conversion (method apply) taking a by-name parameter",
+    // https://users.scala-lang.org/t/2-13-3-by-name-implicit-linting-error/6334
+    "-Xlint:-byname-implicit"
   ),
   // some simple / saner scala project layout
-  Compile / scalaSource := baseDirectory.value / "src",
-  Test / scalaSource := baseDirectory.value / "test",
+  Compile / scalaSource       := baseDirectory.value / "src",
+  Test / scalaSource          := baseDirectory.value / "test",
   Compile / resourceDirectory := baseDirectory.value / "resources",
-  Test / resourceDirectory := baseDirectory.value / "resources-test",
+  Test / resourceDirectory    := baseDirectory.value / "resources-test",
   // common libraries
   libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-core" % "2.6.1",
-    "org.typelevel" %% "cats-effect" % "3.2.9",
-    "co.fs2" %% "fs2-core" % "3.2.2",
-    "co.fs2" %% "fs2-io" % "3.2.2",
+    "org.typelevel" %% "cats-core"   % "2.7.0",
+    "org.typelevel" %% "cats-effect" % "3.3.0",
+    "co.fs2"        %% "fs2-core"    % "3.2.2",
+    "co.fs2"        %% "fs2-io"      % "3.2.2",
     // test libs:
-    "org.scalameta" %% "munit" % "0.7.29" % Test,
-    "org.typelevel" %% "munit-cats-effect-3" % "1.0.6" % Test,
+    "org.scalameta" %% "munit"               % "0.7.29" % Test,
+    "org.typelevel" %% "munit-cats-effect-3" % "1.0.6"  % Test,
     // --
-    "is.cir" %% "ciris" % "2.2.1"
+    "is.cir" %% "ciris" % "2.2.1",
+    // sttp / tapir
+    "com.softwaremill.sttp.client" %% "core"              % "2.0.5",
+    "com.softwaremill.sttp.tapir"  %% "tapir-core"        % "0.19.1",
+    "com.softwaremill.sttp.tapir"  %% "tapir-sttp-client" % "0.19.1",
+    "com.softwaremill.sttp.tapir"  %% "tapir-json-circe"  % "0.19.1"
   ),
   // compiler plugins
   addCompilerPlugin(
