@@ -6,6 +6,7 @@
 # build tooling
 .bloop/
 .bsp/
+metals.sbt
 
 # general build artifacts
 target/
