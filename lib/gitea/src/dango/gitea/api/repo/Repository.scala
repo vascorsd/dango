@@ -1,6 +1,11 @@
-package dango.gitea
+package dango.gitea.api.repo
 
-case class Repository(
+import derevo.circe.magnolia.{decoder, encoder}
+import derevo.derive
+import sttp.tapir.derevo.schema
+
+@derive(encoder, decoder, schema)
+final case class Repository(
     allow_merge_commits: Boolean,
     allow_rebase: Boolean,
     allow_rebase_explicit: Boolean,
@@ -46,14 +51,3 @@ case class Repository(
 //watchers_count:	integer($int64),
     website: String
 )
-
-object Repository {
-  import io.circe._
-  import io.circe.generic.semiauto._
-
-  implicit val jsonDecoder: Decoder[Repository] = deriveDecoder[Repository]
-  implicit val jsonEncoder: Encoder[Repository] = deriveEncoder[Repository]
-
-  import sttp.tapir.Schema
-  implicit val schemaRepository: Schema[Repository] = Schema.derived
-}

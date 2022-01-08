@@ -1,32 +1,32 @@
 lazy val dango = project
   .in(file("."))
   .aggregate(
-    bin,
-    core,
-    gitlab,
-    github,
-    gitea,
-    gogs,
-    sourcehut
+    bin_cli,
+    lib_core,
+    lib_gitlab,
+    lib_github,
+    lib_gitea,
+    lib_gogs,
+    lib_sourcehut
   )
   .settings(
     publish / skip := true
   )
 
-lazy val bin = project
-  .in(file("bin/client"))
+lazy val bin_cli = project
+  .in(file("bin/cli"))
   .settings(
     commonSettings
   )
-  .dependsOn(core, gitea)
+  .dependsOn(lib_core, lib_gitea)
 
-lazy val core = project
+lazy val lib_core = project
   .in(file("lib/core"))
   .settings(
     commonSettings
   )
 
-lazy val gitlab = project
+lazy val lib_gitlab = project
   .in(file("lib/gitlab"))
   .settings(
     commonSettings,
@@ -34,7 +34,7 @@ lazy val gitlab = project
     )
   )
 
-lazy val github = project
+lazy val lib_github = project
   .in(file("lib/github"))
   .settings(
     commonSettings,
@@ -42,7 +42,7 @@ lazy val github = project
     )
   )
 
-lazy val gitea = project
+lazy val lib_gitea = project
   .in(file("lib/gitea"))
   .settings(
     commonSettings,
@@ -50,7 +50,7 @@ lazy val gitea = project
     )
   )
 
-lazy val gogs = project
+lazy val lib_gogs = project
   .in(file("lib/gogs"))
   .settings(
     commonSettings,
@@ -58,7 +58,7 @@ lazy val gogs = project
     )
   )
 
-lazy val sourcehut = project
+lazy val lib_sourcehut = project
   .in(file("lib/sourcehut"))
   .settings(
     commonSettings,
@@ -83,10 +83,9 @@ lazy val commonSettings = Seq(
     "-deprecation",
     "-feature",
     "-explaintypes",
-    // magic ? not really sure what it does or when is need. more scala yonkers.
-    // ok, seems that if I have any code that USES macro expansions, then this needs
-    // to be on. https://docs.scala-lang.org/overviews/macros/annotations.html
-    // "-Ymacro-annotations",
+    // Needs to be on for macros to work. https://docs.scala-lang.org/overviews/macros/annotations.html
+    // It means that removing makes the @newtype and @derive stop working.
+    "-Ymacro-annotations",
     // warns
     "-Werror",
     "-Wnumeric-widen",
@@ -95,7 +94,7 @@ lazy val commonSettings = Seq(
     "-Wextra-implicit",
     // lints
     "-Xlint",
-    // yet another not surpring scala bug yet again...
+    // yet another not surprising scala bug yet again...
     // without this circe semiauto functions trigger
     // "Block result was adapted via implicit conversion (method apply) taking a by-name parameter",
     // https://users.scala-lang.org/t/2-13-3-by-name-implicit-linting-error/6334
@@ -110,18 +109,27 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     "org.typelevel" %% "cats-core"   % "2.7.0",
     "org.typelevel" %% "cats-effect" % "3.3.0",
-    "co.fs2"        %% "fs2-core"    % "3.2.2",
-    "co.fs2"        %% "fs2-io"      % "3.2.2",
+    "co.fs2"        %% "fs2-core"    % "3.2.4",
+    "co.fs2"        %% "fs2-io"      % "3.2.4",
     // test libs:
     "org.scalameta" %% "munit"               % "0.7.29" % Test,
-    "org.typelevel" %% "munit-cats-effect-3" % "1.0.6"  % Test,
+    "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test,
     // --
-    "is.cir" %% "ciris" % "2.2.1",
-    // sttp / tapir
-    "com.softwaremill.sttp.client" %% "core"              % "2.0.5",
-    "com.softwaremill.sttp.tapir"  %% "tapir-core"        % "0.19.1",
-    "com.softwaremill.sttp.tapir"  %% "tapir-sttp-client" % "0.19.1",
-    "com.softwaremill.sttp.tapir"  %% "tapir-json-circe"  % "0.19.1"
+    "is.cir" %% "ciris" % "2.3.1",
+    // sttp / tapir / sttp-client
+    "com.softwaremill.sttp.client"  %% "core"                   % "2.2.10",
+    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.3.17",
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "0.19.3",
+    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.19.3",
+    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.19.3",
+    "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.19.3",
+    // derevo - to generate typeclass instances with a macro @derive
+    "tf.tofu" %% "derevo-cats"           % "0.12.8",
+    "tf.tofu" %% "derevo-circe"          % "0.12.8",
+    "tf.tofu" %% "derevo-circe-magnolia" % "0.12.8",
+    // newtype - generate new types with a macro @newtype
+    // "io.monix" %% "newtypes-core" % "0.0.1",
+    "io.estatico" %% "newtype" % "0.4.4"
   ),
   // compiler plugins
   addCompilerPlugin(
