@@ -1,32 +1,32 @@
 lazy val dango = project
   .in(file("."))
   .aggregate(
-    bin_cli,
-    lib_core,
-    lib_gitlab,
-    lib_github,
-    lib_gitea,
-    lib_gogs,
-    lib_sourcehut
+    `bin-cli`,
+    `lib-core`,
+    `lib-gitlab`,
+    `lib-github`,
+    `lib-gitea`,
+    `lib-gogs`,
+    `lib-sourcehut`
   )
   .settings(
     publish / skip := true
   )
 
-lazy val bin_cli = project
+lazy val `bin-cli` = project
   .in(file("bin/cli"))
   .settings(
     commonSettings
   )
-  .dependsOn(lib_core, lib_gitea)
+  .dependsOn(`lib-core`, `lib-gitea`)
 
-lazy val lib_core = project
+lazy val `lib-core` = project
   .in(file("lib/core"))
   .settings(
     commonSettings
   )
 
-lazy val lib_gitlab = project
+lazy val `lib-gitlab` = project
   .in(file("lib/gitlab"))
   .settings(
     commonSettings,
@@ -34,7 +34,7 @@ lazy val lib_gitlab = project
     )
   )
 
-lazy val lib_github = project
+lazy val `lib-github` = project
   .in(file("lib/github"))
   .settings(
     commonSettings,
@@ -42,7 +42,7 @@ lazy val lib_github = project
     )
   )
 
-lazy val lib_gitea = project
+lazy val `lib-gitea` = project
   .in(file("lib/gitea"))
   .settings(
     commonSettings,
@@ -50,7 +50,7 @@ lazy val lib_gitea = project
     )
   )
 
-lazy val lib_gogs = project
+lazy val `lib-gogs` = project
   .in(file("lib/gogs"))
   .settings(
     commonSettings,
@@ -58,7 +58,7 @@ lazy val lib_gogs = project
     )
   )
 
-lazy val lib_sourcehut = project
+lazy val `lib-sourcehut` = project
   .in(file("lib/sourcehut"))
   .settings(
     commonSettings,
@@ -108,7 +108,7 @@ lazy val commonSettings = Seq(
   // common libraries
   libraryDependencies ++= Seq(
     "org.typelevel" %% "cats-core"   % "2.7.0",
-    "org.typelevel" %% "cats-effect" % "3.3.0",
+    "org.typelevel" %% "cats-effect" % "3.3.3",
     "co.fs2"        %% "fs2-core"    % "3.2.4",
     "co.fs2"        %% "fs2-io"      % "3.2.4",
     // test libs:
@@ -118,15 +118,15 @@ lazy val commonSettings = Seq(
     "is.cir" %% "ciris" % "2.3.1",
     // sttp / tapir / sttp-client
     "com.softwaremill.sttp.client"  %% "core"                   % "2.2.10",
-    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.3.17",
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "0.19.3",
-    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.19.3",
-    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.19.3",
-    "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.19.3",
+    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.3.18",
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "0.20.0-M4",
+    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.20.0-M4",
+    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.20.0-M4",
+    "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.20.0-M4",
     // derevo - to generate typeclass instances with a macro @derive
-    "tf.tofu" %% "derevo-cats"           % "0.12.8",
-    "tf.tofu" %% "derevo-circe"          % "0.12.8",
-    "tf.tofu" %% "derevo-circe-magnolia" % "0.12.8",
+    "tf.tofu" %% "derevo-cats"           % "0.13.0",
+    "tf.tofu" %% "derevo-circe"          % "0.13.0",
+    "tf.tofu" %% "derevo-circe-magnolia" % "0.13.0",
     // newtype - generate new types with a macro @newtype
     // "io.monix" %% "newtypes-core" % "0.0.1",
     "io.estatico" %% "newtype" % "0.4.4"
