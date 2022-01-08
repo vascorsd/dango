@@ -5,7 +5,13 @@ import sttp.tapir._
 
 object legacy {
 
-  def oauth = endpoint
+  def oauth: Endpoint[
+    Unit,
+    (String, String, Option[String], Option[String]),
+    Unit,
+    Unit,
+    Any
+  ] = endpoint
     .in(query[String]("client_id"))
     .in(query[String]("scopes"))
     .in(query[Option[String]]("state"))

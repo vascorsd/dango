@@ -3,8 +3,9 @@ package dango.gitea.client
 import dango.gitea.api._
 import sttp.client3._
 import sttp.model.Uri
+import sttp.tapir.DecodeResult
+import sttp.tapir.PublicEndpoint
 import sttp.tapir.client.sttp._
-import sttp.tapir.{DecodeResult, PublicEndpoint}
 
 private[gitea] class GiteaApi[F[_], R](
     host: Uri,

@@ -1,6 +1,7 @@
 package dango.gitea.api.repo
 
-import derevo.circe.magnolia.{decoder, encoder}
+import derevo.circe.magnolia.decoder
+import derevo.circe.magnolia.encoder
 import derevo.derive
 import sttp.tapir.derevo.schema
 

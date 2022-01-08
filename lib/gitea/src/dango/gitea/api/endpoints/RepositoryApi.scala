@@ -1,7 +1,8 @@
 package dango.gitea.api.endpoints
 
+import dango.gitea.api.Owner
+import dango.gitea.api.RepoName
 import dango.gitea.api.repo.Repository
-import dango.gitea.api.{Owner, RepoName}
 import sttp.tapir._
 import sttp.tapir.codec.newtype._
 import sttp.tapir.json.circe.jsonBody

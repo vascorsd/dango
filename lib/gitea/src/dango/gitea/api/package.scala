@@ -1,6 +1,7 @@
 package dango.gitea
 
 import io.estatico.newtype.macros.newtype
+
 import scala.language.implicitConversions
 
 package object api {
