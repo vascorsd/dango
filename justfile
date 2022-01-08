@@ -23,7 +23,7 @@ clean TARGET='':
         {{SBT}} "{{TARGET}} / clean"; \
     fi
 
-force-clean MODE='':
+clean-force MODE='':
     @echo 'Removing build related artifacts...'
     @rm --recursive --force --verbose build out target .target
 
@@ -39,26 +39,26 @@ format TARGET='':
         {{SBT}} "{{TARGET}} / scalafmt"; \
     fi
 
-fix TARGET='':
-    @if [ "{{TARGET}}" == "" ]; then \
-        {{SBT}} "scalafix"; \
-    else \
-        {{SBT}} "{{TARGET}} / scalafix"; \
-    fi
-
-check-format TARGET='':
+format-check TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
         {{SBT}} "scalafmtSbtCheck;scalafmtCheckAll"; \
     else \
         {{SBT}} "{{TARGET}} / scalafmtSbt;scalafmtCheckAll"; \
     fi
 
-check-fix TARGET='':
+lint TARGET='':
+    @if [ "{{TARGET}}" == "" ]; then \
+        {{SBT}} "scalafix"; \
+    else \
+        {{SBT}} "{{TARGET}} / scalafix"; \
+    fi
+
+lint-check TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
         {{SBT}} "scalafix --check"; \
     else \
         {{SBT}} "{{TARGET}} / scalafix --check"; \
     fi
 
-check-updates:
+updates-check:
     {{SBT}} dependencyUpdates
