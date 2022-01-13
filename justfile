@@ -4,9 +4,9 @@ set shell := ["bash", "-c", "-x"]
 SBT := 'sbt --client'
 
 
-clean-compile: clean build
+clean-compile: clean compile
 
-build TARGET='':
+compile TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
         {{SBT}} compile; \
     else \
@@ -34,30 +34,30 @@ clean-force MODE='':
 
 format TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
-        {{SBT}} scalafmt; \
+        {{SBT}} "scalafmtSbt;scalafmtAll"; \
     else \
-        {{SBT}} "{{TARGET}} / scalafmt"; \
+        {{SBT}} "{{TARGET}} / scalafmtAll"; \
     fi
 
 format-check TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
         {{SBT}} "scalafmtSbtCheck;scalafmtCheckAll"; \
     else \
-        {{SBT}} "{{TARGET}} / scalafmtSbt;scalafmtCheckAll"; \
+        {{SBT}} "{{TARGET}} / scalafmtCheckAll"; \
     fi
 
-lint TARGET='':
+fix TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
-        {{SBT}} "scalafix"; \
+        {{SBT}} "scalafixAll"; \
     else \
-        {{SBT}} "{{TARGET}} / scalafix"; \
+        {{SBT}} "{{TARGET}} / scalafixAll"; \
     fi
 
-lint-check TARGET='':
+fix-check TARGET='':
     @if [ "{{TARGET}}" == "" ]; then \
-        {{SBT}} "scalafix --check"; \
+        {{SBT}} "scalafixAll --check"; \
     else \
-        {{SBT}} "{{TARGET}} / scalafix --check"; \
+        {{SBT}} "{{TARGET}} / scalafixAll --check"; \
     fi
 
 updates-check:
