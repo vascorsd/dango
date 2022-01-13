@@ -24,10 +24,20 @@ private[gitea] class GiteaApi[F[_], R](
 }
 
 object GiteaApi {
-  def apply[F[_], R](
+  def make[F[_], R](
+      host: Uri,
+      sttpBackend: SttpBackend[F, R]
+  ): GiteaApi[F, R] =
+    new GiteaApi[F, R](
+      host,
+      SttpClientInterpreter(),
+      sttpBackend
+    )
+
+  def makeWithInterpreter[F[_], R](
       host: Uri,
       sttpBackend: SttpBackend[F, R],
-      interpreter: SttpClientInterpreter = SttpClientInterpreter()
+      interpreter: SttpClientInterpreter
   ): GiteaApi[F, R] =
     new GiteaApi[F, R](
       host,

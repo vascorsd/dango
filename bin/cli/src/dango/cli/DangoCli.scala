@@ -20,7 +20,7 @@ object DangoCli extends IOApp {
   ): IO[Unit] = for {
     _ <- IO.println(s"hi mom")
 
-    gitea = GiteaApi(uri"https://try.gitea.io", sttpBackend)
+    gitea = GiteaApi.make(uri"https://try.gitea.io", sttpBackend)
     repoInfo <- gitea.repository(Owner("Mikaela"), RepoName("gist-manual"))
 
     _ <- IO.println(repoInfo)
