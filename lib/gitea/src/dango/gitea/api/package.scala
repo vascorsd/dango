@@ -10,6 +10,4 @@ package object api {
 
   @newtype
   final case class RepoName(value: String)
-
-  type Repository = repo.Repository
 }

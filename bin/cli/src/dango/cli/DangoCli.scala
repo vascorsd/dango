@@ -21,9 +21,11 @@ object DangoCli extends IOApp {
     _ <- IO.println(s"--- gitea client ---")
 
     gitea = GiteaApi.make(uri"https://try.gitea.io", sttpBackend)
-    repoInfo <- gitea.repository(Owner("Mikaela"), RepoName("gist-manual"))
+    repoInfo    <- gitea.repos.info(Owner("Mikaela"), RepoName("gist-manual"))
+    releaseInfo <- gitea.repos.releases.list(Owner("Mikaela"), RepoName("gist-manual"))
 
     _ <- IO.println(pprint.pprintln(repoInfo))
+    _ <- IO.println(pprint.pprintln(releaseInfo))
   } yield ()
 
   def run(args: List[String]): IO[ExitCode] =
