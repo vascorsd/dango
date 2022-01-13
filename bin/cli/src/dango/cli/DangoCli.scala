@@ -18,12 +18,12 @@ object DangoCli extends IOApp {
   def program(
       sttpBackend: SttpBackend[IO, Any]
   ): IO[Unit] = for {
-    _ <- IO.println(s"hi mom")
+    _ <- IO.println(s"--- gitea client ---")
 
     gitea = GiteaApi.make(uri"https://try.gitea.io", sttpBackend)
     repoInfo <- gitea.repository(Owner("Mikaela"), RepoName("gist-manual"))
 
-    _ <- IO.println(repoInfo)
+    _ <- IO.println(pprint.pprintln(repoInfo))
   } yield ()
 
   def run(args: List[String]): IO[ExitCode] =

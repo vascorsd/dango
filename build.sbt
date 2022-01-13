@@ -107,14 +107,15 @@ lazy val commonSettings = Seq(
   Test / resourceDirectory    := baseDirectory.value / "resources-test",
   // common libraries
   libraryDependencies ++= Seq(
+    // basic cats & fs2
     "org.typelevel" %% "cats-core"   % "2.7.0",
     "org.typelevel" %% "cats-effect" % "3.3.3",
     "co.fs2"        %% "fs2-core"    % "3.2.4",
     "co.fs2"        %% "fs2-io"      % "3.2.4",
-    // test libs:
+    // test libs
     "org.scalameta" %% "munit"               % "0.7.29" % Test,
     "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test,
-    // --
+    // config
     "is.cir" %% "ciris" % "2.3.1",
     // sttp / tapir / sttp-client
     "com.softwaremill.sttp.client"  %% "core"                   % "2.2.10",
@@ -129,7 +130,9 @@ lazy val commonSettings = Seq(
     "tf.tofu" %% "derevo-circe-magnolia" % "0.13.0",
     // newtype - generate new types with a macro @newtype
     // "io.monix" %% "newtypes-core" % "0.0.1",
-    "io.estatico" %% "newtype" % "0.4.4"
+    "io.estatico" %% "newtype" % "0.4.4",
+    // printing good looking case classes
+    "com.lihaoyi" %% "pprint" % "0.7.0"
   ),
   // compiler plugins
   addCompilerPlugin(
