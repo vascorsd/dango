@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Vasco Dias <m+git@vascorsd.com>
+//
+// SPDX-License-Identifier: CC0-1.0
+
 // scalafix rules / dependencies
 
 ThisBuild / scalafixScalaBinaryVersion := (ThisBuild / scalaBinaryVersion).value

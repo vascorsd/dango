@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Vasco Dias <m+git@vascorsd.com>
+//
+// SPDX-License-Identifier: CC0-1.0
+
 lazy val dango = project
   .in(file("."))
   .aggregate(
