@@ -1,13 +1,8 @@
 package dango.gitea
 
-import io.estatico.newtype.macros.newtype
-
-import scala.language.implicitConversions
+import sttp.tapir._
 
 package object api {
-  @newtype
-  final case class Owner(value: String)
-
-  @newtype
-  final case class RepoName(value: String)
+  // api versions available:
+  private[api] val v1 = endpoint.in("api" / "v1")
 }

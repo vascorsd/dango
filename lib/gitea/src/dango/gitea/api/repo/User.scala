@@ -1,11 +1,5 @@
 package dango.gitea.api.repo
 
-import derevo.circe.magnolia.decoder
-import derevo.circe.magnolia.encoder
-import derevo.derive
-import sttp.tapir.derevo.schema
-
-@derive(encoder, decoder, schema)
 final case class User(
     id: Int,
     login: String,
@@ -13,3 +7,17 @@ final case class User(
     email: String,
     avatar_url: String
 )
+
+object User {
+  @io.estatico.newtype.macros.newtype
+  final case class UserId(private val v: Int)
+  object UserId {
+    implicit val tapirSchema: Schema[UserId] = deriving
+    implicit val circeEnc: Encoder[UserId]   = deriving
+    implicit val circeDec: Decoder[UserId]   = deriving
+  }
+
+  implicit val tapirSchema: Schema[User] = schema.derived
+  implicit val circeEnc: Encoder[User]   = circeEncoder.deriveMagnoliaEncoder
+  implicit val circeDec: Decoder[User]   = circeDecoder.deriveMagnoliaDecoder
+}

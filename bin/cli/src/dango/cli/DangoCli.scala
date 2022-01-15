@@ -2,7 +2,7 @@ package dango
 package cli
 
 import cats.effect._
-import dango.gitea.api._
+import dango.gitea.api.repo.Newtypes
 import dango.gitea.client._
 import sttp.capabilities.WebSockets
 import sttp.capabilities.fs2.Fs2Streams
@@ -21,8 +21,12 @@ object DangoCli extends IOApp {
     _ <- IO.println(s"--- gitea client ---")
 
     gitea = GiteaApi.make(uri"https://try.gitea.io", sttpBackend)
-    repoInfo    <- gitea.repos.info(Owner("Mikaela"), RepoName("gist-manual"))
-    releaseInfo <- gitea.repos.releases.list(Owner("Mikaela"), RepoName("gist-manual"))
+    repoInfo <- gitea.repos.info(
+      Newtypes.Owner("Mikaela"),
+      Newtypes.RepoName("gist-manual")
+    )
+    releaseInfo <- gitea.repos.releases
+      .list(Newtypes.Owner("Mikaela"), Newtypes.RepoName("gist-manual"))
 
     _ <- IO.println(pprint.pprintln(repoInfo))
     _ <- IO.println(pprint.pprintln(releaseInfo))

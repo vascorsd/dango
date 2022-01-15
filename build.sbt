@@ -98,7 +98,10 @@ lazy val commonSettings = Seq(
     // without this circe semiauto functions trigger
     // "Block result was adapted via implicit conversion (method apply) taking a by-name parameter",
     // https://users.scala-lang.org/t/2-13-3-by-name-implicit-linting-error/6334
-    "-Xlint:-byname-implicit"
+    "-Xlint:-byname-implicit",
+    // enable language features.
+    // implicit conversions required for using newtype macro.
+    "-language:implicitConversions"
   ),
   // some simple / saner scala project layout
   Compile / scalaSource       := baseDirectory.value / "src",
@@ -124,15 +127,13 @@ lazy val commonSettings = Seq(
     "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.20.0-M4",
     "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.20.0-M4",
     "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.20.0-M4",
-    // derevo - to generate typeclass instances with a macro @derive
-    "tf.tofu" %% "derevo-cats"           % "0.13.0",
-    "tf.tofu" %% "derevo-circe"          % "0.13.0",
-    "tf.tofu" %% "derevo-circe-magnolia" % "0.13.0",
+    // circe stuff - json serialization
+    "io.circe" %% "circe-magnolia-derivation" % "0.7.0",
     // newtype - generate new types with a macro @newtype
     // "io.monix" %% "newtypes-core" % "0.0.1",
     "io.estatico" %% "newtype" % "0.4.4",
     // printing good looking case classes
-    "com.lihaoyi" %% "pprint" % "0.7.0"
+    "com.lihaoyi" %% "pprint" % "0.7.1"
   ),
   // compiler plugins
   addCompilerPlugin(

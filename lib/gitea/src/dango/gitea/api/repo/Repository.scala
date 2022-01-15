@@ -1,11 +1,5 @@
 package dango.gitea.api.repo
 
-import derevo.circe.magnolia.decoder
-import derevo.circe.magnolia.encoder
-import derevo.derive
-import sttp.tapir.derevo.schema
-
-@derive(encoder, decoder, schema)
 final case class Repository(
     allow_merge_commits: Boolean,
     allow_rebase: Boolean,
@@ -52,3 +46,17 @@ final case class Repository(
     watchers_count: Int,
     website: String
 )
+
+object Repository {
+  @io.estatico.newtype.macros.newtype
+  final case class RepositoryId(private val v: Int)
+  object RepositoryId {
+    implicit val tapirSchema: Schema[RepositoryId] = deriving
+    implicit val circeEnc: Encoder[RepositoryId]   = deriving
+    implicit val circeDec: Decoder[RepositoryId]   = deriving
+  }
+
+  implicit val tapirSchema: Schema[Repository] = schema.derived
+  implicit val circeEnc: Encoder[Repository]   = circeEncoder.deriveMagnoliaEncoder
+  implicit val circeDec: Decoder[Repository]   = circeDecoder.deriveMagnoliaDecoder
+}

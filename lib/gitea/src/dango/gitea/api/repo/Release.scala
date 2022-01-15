@@ -1,13 +1,7 @@
 package dango.gitea.api.repo
 
-import derevo.circe.magnolia.decoder
-import derevo.circe.magnolia.encoder
-import derevo.derive
-import sttp.tapir.derevo.schema
-
-@derive(encoder, decoder, schema)
 final case class Release(
-    id: Int,
+    id: Release.Id,
     name: String,
     body: String,
     author: User,
@@ -20,3 +14,17 @@ final case class Release(
     target_commitish: String,
     html_url: String
 )
+
+object Release {
+  @io.estatico.newtype.macros.newtype
+  final case class Id(private val v: Int)
+  object Id {
+    implicit val circeEnc: Encoder[Id]   = deriving
+    implicit val circeDec: Decoder[Id]   = deriving
+    implicit val tapirSchema: Schema[Id] = deriving
+  }
+
+  implicit val tapirSchema: Schema[Release] = schema.derived
+  implicit val circeEnc: Encoder[Release]   = circeEncoder.deriveMagnoliaEncoder
+  implicit val circeDec: Decoder[Release]   = circeDecoder.deriveMagnoliaDecoder
+}
