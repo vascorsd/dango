@@ -6,7 +6,7 @@ package dango.gitea.client
 
 import dango.gitea.api._
 import dango.gitea.api.repo._
-import dango.gitea.api.repo.Newtypes.{Owner, RepoName}
+
 import sttp.client3._
 import sttp.model.Uri
 import sttp.tapir.DecodeResult
@@ -22,19 +22,19 @@ private[gitea] class GiteaApi[F[_], R](
   private def doHttpCall[I, E, O](e: PublicEndpoint[I, E, O, Any]) =
     interpreter.toClient(e, Some(host), backend)
 
-  object repos {
+  object repo {
     def info(
-        owner: Owner,
+        repoOwner: RepoOwner,
         repoName: RepoName
     ): F[DecodeResult[Either[Unit, Repository]]] =
-      doHttpCall(endpoints.RepositoryApi.repository_get())((owner, repoName))
+      doHttpCall(endpoints.RepositoryApi.repository_get())((repoOwner, repoName))
 
     object releases {
       def list(
-          owner: Owner,
+          repoOwner: RepoOwner,
           repoName: RepoName
       ): F[DecodeResult[Either[Unit, List[Release]]]] =
-        doHttpCall(endpoints.RepositoryApi.releases_list())((owner, repoName))
+        doHttpCall(endpoints.RepositoryApi.releases_list())((repoOwner, repoName))
     }
   }
 

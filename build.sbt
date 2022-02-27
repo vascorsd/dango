@@ -137,7 +137,10 @@ lazy val commonSettings = Seq(
     // "io.monix" %% "newtypes-core" % "0.0.1",
     "io.estatico" %% "newtype" % "0.4.4",
     // printing good looking case classes
-    "com.lihaoyi" %% "pprint" % "0.7.1"
+    "com.lihaoyi" %% "pprint" % "0.7.1",
+    // command line parser
+    "com.monovore" %% "decline"        % "2.2.0",
+    "com.monovore" %% "decline-effect" % "2.2.0"
   ),
   // compiler plugins
   addCompilerPlugin(

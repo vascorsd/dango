@@ -13,12 +13,13 @@ final case class User(
 )
 
 object User {
+
   @io.estatico.newtype.macros.newtype
-  final case class UserId(private val v: Int)
-  object UserId {
-    implicit val tapirSchema: Schema[UserId] = deriving
-    implicit val circeEnc: Encoder[UserId]   = deriving
-    implicit val circeDec: Decoder[UserId]   = deriving
+  final case class Id(private val v: Int)
+  object Id {
+    implicit val tapirSchema: Schema[Id] = deriving
+    implicit val circeEnc: Encoder[Id]   = deriving
+    implicit val circeDec: Decoder[Id]   = deriving
   }
 
   implicit val tapirSchema: Schema[User] = schema.derived

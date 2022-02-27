@@ -52,12 +52,20 @@ final case class Repository(
 )
 
 object Repository {
+
   @io.estatico.newtype.macros.newtype
-  final case class RepositoryId(private val v: Int)
-  object RepositoryId {
-    implicit val tapirSchema: Schema[RepositoryId] = deriving
-    implicit val circeEnc: Encoder[RepositoryId]   = deriving
-    implicit val circeDec: Decoder[RepositoryId]   = deriving
+  final case class Owner(private val v: String)
+
+  @io.estatico.newtype.macros.newtype
+  final case class Name(private val v: String)
+
+  @io.estatico.newtype.macros.newtype
+  final case class Id(private val v: Int)
+
+  object Id {
+    implicit val tapirSchema: Schema[Id] = deriving
+    implicit val circeEnc: Encoder[Id]   = deriving
+    implicit val circeDec: Decoder[Id]   = deriving
   }
 
   implicit val tapirSchema: Schema[Repository] = schema.derived

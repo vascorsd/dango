@@ -5,6 +5,11 @@
 package dango.gitea.api
 
 package object repo {
+  type RepoOwner = Repository.Owner
+  val RepoOwner: Repository.Owner.type = Repository.Owner
+  type RepoName = Repository.Name
+  val RepoName: Repository.Name.type = Repository.Name
+
   // available type classes for semi auto derivation:
 
   private[repo] type Schema[T] = sttp.tapir.Schema[T]
@@ -15,5 +20,4 @@ package object repo {
 
   private[repo] type Decoder[T] = io.circe.Decoder[T]
   private[repo] val circeDecoder = io.circe.magnolia.derivation.decoder.semiauto
-
 }

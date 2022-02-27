@@ -20,6 +20,7 @@ final case class Release(
 )
 
 object Release {
+
   @io.estatico.newtype.macros.newtype
   final case class Id(private val v: Int)
   object Id {
