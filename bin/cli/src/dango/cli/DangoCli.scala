@@ -12,25 +12,17 @@ import sttp.capabilities.WebSockets
 import sttp.capabilities.fs2.Fs2Streams
 import sttp.client3._
 import sttp.client3.httpclient.fs2.HttpClientFs2Backend
-
-import dango.gitea.api.repo._
 import dango.gitea.client._
+import sttp.model.Uri
 
 object DangoCli
     extends CommandIOApp(
       name = "dango-cli",
-      header = "Interact with multiple git providers"
+      header = "Interact with multiple git hosting platforms"
     ) {
 
   def main: Opts[IO[ExitCode]] = {
-    val availableProviders = List("gitea", "github")
-    val provider: Opts[String] = Opts
-      .argument[String]("provider")
-      .validate(
-        s"Use one of the providers available: ${availableProviders.mkString(", ")}"
-      ) { availableProviders.contains }
-
-    provider.map(Args.apply).map(run)
+    Args.read.map(run)
   }
 
   def run(args: Args): IO[ExitCode] =
@@ -48,20 +40,26 @@ object DangoCli
   ): IO[Unit] = for {
     _ <- IO.println(s"--- gitea client ---")
 
-    gitea = GiteaApi.make(uri"https://try.gitea.io", sttpBackend)
+    gitea = (args.platform, args.hostUrl) match {
+      case (Platform.Gitea, Some(url)) =>
+        GiteaApi.make(Uri(url), sttpBackend)
+
+      case (Platform.Gitea, None) =>
+        GiteaApi.make(uri"https://try.gitea.io", sttpBackend)
+
+      case _ => ???
+    }
+
     repoInfo <- gitea.repo.info(
-      RepoOwner("Mikaela"),
-      RepoName("gist-manual")
+      args.owner,
+      args.repo
     )
-    releaseInfo <- gitea.repo.releases
-      .list(RepoOwner("Mikaela"), RepoName("gist-manual"))
+
+    // releaseInfo <- gitea.repo.releases
+    //  .list(RepoOwner("Mikaela"), RepoName("gist-manual"))
 
     _ <- IO.println(pprint.pprintln(repoInfo))
-    _ <- IO.println(pprint.pprintln(releaseInfo))
+    // _ <- IO.println(pprint.pprintln(releaseInfo))
   } yield ()
 
 }
-
-case class Args(
-    provider: String
-)
