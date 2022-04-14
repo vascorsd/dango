@@ -1,23 +1,25 @@
 package dango.cli
 
-import cats.implicits._
-import cats.data.Validated
-import com.monovore.decline.{Argument, Opts}
-import dango.gitea.api.repo._
-import io.estatico.newtype.ops._
+import com.monovore.decline.Opts
+import cats.syntax.all._
 
 import java.net.URI
 
 final case class Args(
-    platform: Platform,
     hostUrl: Option[URI],
-    owner: RepoOwner,
-    repo: RepoName
+    platform: Platform,
+    owner: Repository.Owner,
+    repo: Repository.Name
 )
 
-object Args {
+object Args extends ArgsInstances {
   def read: Opts[Args] = {
-    (platformOpt, hostUrlOpt.orNone, ownerOpt, repoOpt).mapN(Args.apply)
+    (
+      hostUrlOpt.orNone,
+      platformOpt,
+      ownerOpt,
+      repoOpt
+    ).mapN(Args.apply)
   }
 
   private val platformOpt = Opts.argument[Platform]()
@@ -27,8 +29,14 @@ object Args {
     "Use a different host/url for the platform instead of the default"
   )
 
-  private val ownerOpt = Opts.argument[RepoOwner]("owner")
-  private val repoOpt  = Opts.argument[RepoName]("repo")
+  private val ownerOpt = Opts.argument[Repository.Owner]("owner")
+  private val repoOpt  = Opts.argument[Repository.Name]("repo")
+}
+
+trait ArgsInstances {
+  import com.monovore.decline.Argument
+  import cats.data._
+  import io.estatico.newtype.ops._
 
   implicit def platformArg: Argument[Platform] = Argument.from("platform") { str =>
     Platform.from(str) match {
@@ -40,9 +48,9 @@ object Args {
     }
   }
 
-  implicit def repoOwnerArg: Argument[RepoOwner] =
-    implicitly[Argument[String]].coerce[Argument[RepoOwner]]
+  implicit def repoOwnerArg: Argument[Repository.Owner] =
+    implicitly[Argument[String]].coerce[Argument[Repository.Owner]]
 
-  implicit def repoNameArg: Argument[RepoName] =
-    Argument[String].coerce[Argument[RepoName]]
+  implicit def repoNameArg: Argument[Repository.Name] =
+    Argument[String].coerce[Argument[Repository.Name]]
 }

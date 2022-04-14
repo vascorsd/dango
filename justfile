@@ -8,7 +8,7 @@ set shell := ["bash", "-c", "-x"]
 
 SBT := 'sbt --client'
 
-clean-compile: clean compile
+default: clean compile
 
 compile TARGET='':
     @if [ "{{ TARGET }}" == "" ]; then \

@@ -2,7 +2,11 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package dango.gitea.api.repo
+package dango.gitea.api
+package v1
+package repos
+
+import dango.internal.derivation._
 
 final case class User(
     id: Int,
@@ -22,7 +26,7 @@ object User {
     implicit val circeDec: Decoder[Id]   = deriving
   }
 
-  implicit val tapirSchema: Schema[User] = schema.derived
-  implicit val circeEnc: Encoder[User]   = circeEncoder.deriveMagnoliaEncoder
-  implicit val circeDec: Decoder[User]   = circeDecoder.deriveMagnoliaDecoder
+  implicit val tapirSchema: Schema[User] = tapir.schema.derived
+  implicit val circeEnc: Encoder[User]   = circe.encoder.deriveMagnoliaEncoder
+  implicit val circeDec: Decoder[User]   = circe.decoder.deriveMagnoliaDecoder
 }

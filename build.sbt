@@ -19,10 +19,10 @@ lazy val dango = project
 
 lazy val `bin-cli` = project
   .in(file("bin/cli"))
+  .dependsOn(`lib-core`, `lib-gitea`)
   .settings(
     commonSettings
   )
-  .dependsOn(`lib-core`, `lib-gitea`)
 
 lazy val `lib-core` = project
   .in(file("lib/core"))
@@ -48,6 +48,7 @@ lazy val `lib-github` = project
 
 lazy val `lib-gitea` = project
   .in(file("lib/gitea"))
+  .dependsOn(`lib-core`)
   .settings(
     commonSettings,
     libraryDependencies ++= Seq(

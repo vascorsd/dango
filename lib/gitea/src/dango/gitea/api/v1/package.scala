@@ -2,11 +2,10 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
-package dango.gitea
+package dango.gitea.api
 
 import sttp.tapir._
 
-package object api {
-  // api versions available:
-  private[api] val v1 = endpoint.in("api" / "v1")
+package object v1 {
+  private[v1] val _v1 = endpoint.in("api" / "v1")
 }
