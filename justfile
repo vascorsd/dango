@@ -17,8 +17,8 @@ compile TARGET='':
         {{ SBT }} "{{ TARGET }} / compile"; \
     fi
 
-run APP:
-    {{ SBT }} "{{ APP }} / run"
+run APP ARGS='':
+    {{ SBT }} "{{ APP }} / run {{ ARGS }}"
 
 clean TARGET='':
     @if [ "{{ TARGET }}" == "" ]; then \

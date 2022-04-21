@@ -1,15 +1,9 @@
 package dango.cli
 
-sealed trait Operation[+A]
+sealed trait Operation extends Product with Serializable
 object Operation {
   case object Repo {
-    case class Info(repo: Repository)     extends Operation[Unit]
-    case class Releases(repo: Repository) extends Operation[Unit]
+    case object Info     extends Operation
+    case object Releases extends Operation
   }
-}
-
-sealed trait Result[+A]
-object Result {
-  case object Un
-  case object None extends Result[Unit]
 }

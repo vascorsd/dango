@@ -21,7 +21,7 @@ object Platform {
   }
 
   def from(name: String): Option[Platform] = {
-    values.find(elem => elem.name == name)
+    values.find(_.name == name)
   }
 
 }

@@ -20,13 +20,13 @@ trait RepositoryApi {
         .in(path[RepoOwner]("owner"))
         .in(path[RepoName]("repo"))
 
-    // --- /v1/repo/search
+    // --- /v1/repos/search
     val search: Endpoint[Unit, Unit, Unit, SearchResults, Any] =
       _repos
         .in("search")
         .out(jsonBody[SearchResults])
 
-    // --- /v1/repo/{owner}/{repo}
+    // --- /v1/repos/{owner}/{repo}
     val get: Endpoint[Unit, (RepoOwner, RepoName), Unit, Repository, Any] =
       _reposParams.get
         .out(jsonBody[Repository])
@@ -34,12 +34,12 @@ trait RepositoryApi {
     object releases {
       private val _releases = _reposParams.in("releases")
 
-      // --- /v1/repo/{owner}/{repo}/releases
+      // --- /v1/repos/{owner}/{repo}/releases
       val list: Endpoint[Unit, (RepoOwner, RepoName), Unit, List[Release], Any] =
         _releases.get
           .out(jsonBody[List[Release]])
 
-      // --- /v1/repo/{owner}/{repo}/releases/{id}
+      // --- /v1/repos/{owner}/{repo}/releases/{id}
       val get
           : Endpoint[Unit, (RepoOwner, RepoName, Release.Id), Unit, List[Release], Any] =
         _releases.get

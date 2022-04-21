@@ -1,7 +1,8 @@
 package dango.cli
 
-import com.monovore.decline.Opts
+import com.monovore.decline.{Command, Opts}
 import cats.syntax.all._
+import dango.cli.Operation.Repo
 
 import java.net.URI
 
@@ -9,7 +10,8 @@ final case class Args(
     hostUrl: Option[URI],
     platform: Platform,
     owner: Repository.Owner,
-    repo: Repository.Name
+    repo: Repository.Name,
+    command: Operation
 )
 
 object Args extends ArgsInstances {
@@ -18,7 +20,13 @@ object Args extends ArgsInstances {
       hostUrlOpt.orNone,
       platformOpt,
       ownerOpt,
-      repoOpt
+      repoOpt,
+      Opts.subcommands[Operation](
+        Command("info", "Obtain general information about the repository")(
+          Opts.apply(Repo.Info)
+        ),
+        Command("releases", "Releases information")(Opts.apply(Repo.Releases))
+      )
     ).mapN(Args.apply)
   }
 
@@ -31,6 +39,8 @@ object Args extends ArgsInstances {
 
   private val ownerOpt = Opts.argument[Repository.Owner]("owner")
   private val repoOpt  = Opts.argument[Repository.Name]("repo")
+
+  // Opts.subcommand("test", "fuuuuk")
 }
 
 trait ArgsInstances {
@@ -43,7 +53,7 @@ trait ArgsInstances {
       case Some(v) => Validated.valid(v)
       case None =>
         Validated.invalidNel(
-          s"Invalid Platform. Available: ${Platform.names.mkString(", ")}. Given: ${str}"
+          s"Invalid Platform.\nGiven: ${str}.\nAvailable: ${Platform.names.mkString(", ")}."
         )
     }
   }

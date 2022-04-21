@@ -8,8 +8,10 @@ package cli
 import cats.effect._
 import com.monovore.decline._
 import com.monovore.decline.effect.CommandIOApp
+import dango.cli.Operation.Repo
 import sttp.client3._
 import dango.gitea.client._
+import sttp.model.Uri
 
 object Main
     extends CommandIOApp(
@@ -36,17 +38,35 @@ object Main
   ): IO[Unit] = for {
     _ <- IO.println(())
 
-    gitea = GiteaApi.make[IO, Any](resources.sttpBackend1, uri"https://try.gitea.io")
-    repoInfo <- gitea.repos.info(
-      dango.gitea.api.v1.repos.RepoOwner(args.owner.v),
-      dango.gitea.api.v1.repos.RepoName(args.repo.v)
-    )
+    _ <- args.platform match {
+      case Platform.Gitea =>
+        val host = args.hostUrl.fold[Uri](uri"https://try.gitea.io")(Uri(_))
 
-    // releaseInfo <- gitea.repo.releases
-    //  .list(RepoOwner("Mikaela"), RepoName("gist-manual"))
+        val gitea =
+          GiteaApi.make[IO, Any](resources.sttpBackend1, host)
 
-    _ <- IO.println(pprint.pprintln(repoInfo))
-    // _ <- IO.println(pprint.pprintln(releaseInfo))
+        args.command match {
+          case Repo.Info =>
+            val repoInfo = gitea.repos.info(
+              dango.gitea.api.v1.repos.RepoOwner(args.owner.v),
+              dango.gitea.api.v1.repos.RepoName(args.repo.v)
+            )
+
+            repoInfo.flatMap(r => IO.println(pprint.pprintln(r)))
+
+          case Repo.Releases =>
+            val releaseInfo = gitea.repos.releases.list(
+              dango.gitea.api.v1.repos.RepoOwner(args.owner.v),
+              dango.gitea.api.v1.repos.RepoName(args.repo.v)
+            )
+
+            releaseInfo.flatMap(r => IO.println(pprint.pprintln(r)))
+        }
+
+      case _ =>
+        IO.println("NOPE")
+    }
+
   } yield ()
 
   /*def doActionOn[A, B](
