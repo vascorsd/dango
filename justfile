@@ -33,7 +33,7 @@ clean-force MODE='':
 
     @if [ "{{ MODE }}" == "all" ]; then \
         echo 'Removing extra stuff from workspace...'; \
-        rm --recursive --force --verbose .bloop .idea .idea_modules .bsp .metals .vscode; \
+        rm --recursive --force --verbose .bloop .bsp .metals .idea .idea_modules .vscode; \
     fi
 
 format TARGET='':

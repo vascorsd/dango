@@ -13,6 +13,7 @@
 metals.sbt
 
 # general build artifacts
+project/project/
 target/
 .target/
 build/
