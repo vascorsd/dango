@@ -2,6 +2,6 @@
 //
 // SPDX-License-Identifier: CC0-1.0
 
-ThisBuild / scalaVersion := "2.13.7"
+ThisBuild / scalaVersion := "3.1.2"
 ThisBuild / version      := "0.0.1-SNAPSHOT"
 ThisBuild / organization := "com.vascorsd"

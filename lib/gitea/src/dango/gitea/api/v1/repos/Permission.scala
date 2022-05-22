@@ -12,10 +12,11 @@ final case class Permission(
     admin: Boolean,
     push: Boolean,
     pull: Boolean
-)
+) derives CirceEncoderObject,
+      TapirSchema
 
-object Permission {
-  implicit val tapirSchema: Schema[Permission] = tapir.schema.derived
-  implicit val circeEnc: Encoder[Permission]   = circe.encoder.deriveMagnoliaEncoder
-  implicit val circeDec: Decoder[Permission]   = circe.decoder.deriveMagnoliaDecoder
-}
+//object Permission {
+// implicit val tapirSchema: Schema[Permission] = tapir.schema.derived
+// implicit val circeEnc: Encoder[Permission]   = circe.encoder.deriveMagnoliaEncoder
+// implicit val circeDec: Decoder[Permission]   = circe.decoder.deriveMagnoliaDecoder
+//}

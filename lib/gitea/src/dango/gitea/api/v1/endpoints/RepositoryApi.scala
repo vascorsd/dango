@@ -8,7 +8,8 @@ package endpoints
 import dango.gitea.api.v1.repos._
 
 import sttp.tapir._
-import sttp.tapir.codec.newtype._
+import sttp.tapir.generic.auto._
+//import sttp.tapir.codec.newtype._
 import sttp.tapir.json.circe.jsonBody
 
 trait RepositoryApi {

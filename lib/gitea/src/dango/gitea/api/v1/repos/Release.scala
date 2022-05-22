@@ -21,19 +21,41 @@ final case class Release(
     tarball_url: String,
     target_commitish: String,
     html_url: String
-)
+) derives CirceEncoderObject,
+      CirceDecoder,
+      TapirSchema
 
 object Release {
 
-  @io.estatico.newtype.macros.newtype
-  final case class Id(private val v: Int)
+  opaque type Id = Int
   object Id {
-    implicit val circeEnc: Encoder[Id]   = deriving
-    implicit val circeDec: Decoder[Id]   = deriving
-    implicit val tapirSchema: Schema[Id] = deriving
+    def make(v: Int): Id             = v
+    extension (v: Id) def value: Int = v
+
+    given CirceDecoder[Id] =
+      summon[CirceDecoder[Int]]
+
+    given CirceEncoder[Id] =
+      summon[CirceEncoder[Int]]
+
+    given TapirSchema[Id] =
+      summon[TapirSchema[Int]]
+        .map(s => Option.apply(make(s)))(_.value)
+
+    given TapirCodecPlain[Id] =
+      sttp.tapir.Codec.parsedString(s => make(s.toInt))
+
   }
 
-  implicit val tapirSchema: Schema[Release] = tapir.schema.derived
-  implicit val circeEnc: Encoder[Release]   = circe.encoder.deriveMagnoliaEncoder
-  implicit val circeDec: Decoder[Release]   = circe.decoder.deriveMagnoliaDecoder
+  // @io.estatico.newtype.macros.newtype
+  // final case class Id(private val v: Int)
+  // object Id {
+  // implicit val circeEnc: Encoder[Id]   = deriving
+  // implicit val circeDec: Decoder[Id]   = deriving
+  // implicit val tapirSchema: Schema[Id] = deriving
+  // }
+
+  // implicit val tapirSchema: Schema[Release] = tapir.schema.derived
+  // implicit val circeEnc: Encoder[Release]   = circe.encoder.deriveMagnoliaEncoder
+  // implicit val circeDec: Decoder[Release]   = circe.decoder.deriveMagnoliaDecoder
 }

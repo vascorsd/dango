@@ -53,26 +53,85 @@ final case class Repository(
 //updated_at:	String($date-time),
     watchers_count: Int,
     website: String
-)
+) derives CirceEncoderObject,
+      CirceDecoder,
+      TapirSchema
 
 object Repository {
 
-  @io.estatico.newtype.macros.newtype
-  final case class Owner(private val v: String)
+  // @io.estatico.newtype.macros.newtype
+  // final case class Owner(private val v: String)
 
-  @io.estatico.newtype.macros.newtype
-  final case class Name(private val v: String)
+  // @io.estatico.newtype.macros.newtype
+  // final case class Name(private val v: String)
 
-  @io.estatico.newtype.macros.newtype
-  final case class Id(private val v: Int)
+  // @io.estatico.newtype.macros.newtype
+  // final case class Id(private val v: Int)
 
-  object Id {
-    implicit val tapirSchema: Schema[Id] = deriving
-    implicit val circeEnc: Encoder[Id]   = deriving
-    implicit val circeDec: Decoder[Id]   = deriving
+  opaque type Owner = String
+  object Owner {
+    def make(v: String): Owner             = v
+    extension (v: Owner) def value: String = v
+
+    given CirceEncoder[Owner] =
+      summon[CirceEncoder[String]].contramap(value)
+
+    given CirceDecoder[Owner] =
+      summon[CirceDecoder[String]].map(make)
+
+    given TapirSchema[Owner] =
+      summon[TapirSchema[String]]
+        .map(s => Option.apply(make(s)))(_.value)
+
+    given TapirCodecPlain[Owner] =
+      sttp.tapir.Codec.parsedString(make)
   }
 
-  implicit val tapirSchema: Schema[Repository] = tapir.schema.derived
-  implicit val circeEnc: Encoder[Repository]   = circe.encoder.deriveMagnoliaEncoder
-  implicit val circeDec: Decoder[Repository]   = circe.decoder.deriveMagnoliaDecoder
+  opaque type Name = String
+  object Name {
+    def make(v: String): Name             = v
+    extension (v: Name) def value: String = v
+
+    given CirceEncoder[Name] =
+      summon[CirceEncoder[String]].contramap(value)
+
+    given CirceDecoder[Name] =
+      summon[CirceDecoder[String]].map(make)
+
+    given TapirSchema[Name] =
+      summon[TapirSchema[String]]
+        .map(s => Option.apply(make(s)))(_.value)
+
+    given TapirCodecPlain[Name] =
+      sttp.tapir.Codec.parsedString(make)
+  }
+
+  opaque type Id = Int
+  object Id {
+    def make(v: Int): Id             = v
+    extension (v: Id) def value: Int = v
+
+    given CirceEncoder[Id] =
+      summon[CirceEncoder[Int]].contramap(value)
+
+    given CirceDecoder[Id] =
+      summon[CirceDecoder[Int]].map(make)
+
+    given TapirSchema[Id] =
+      summon[TapirSchema[Int]]
+        .map(s => Option.apply(make(s)))(_.value)
+
+    given TapirCodecPlain[Id] =
+      sttp.tapir.Codec.parsedString(s => make(s.toInt))
+  }
+
+  // object Id {
+  // implicit val tapirSchema: Schema[Id] = deriving
+  // implicit val circeEnc: Encoder[Id]   = deriving
+  // implicit val circeDec: Decoder[Id]   = deriving
+  // }
+
+  // implicit val tapirSchema: Schema[Repository] = tapir.schema.derived
+  // implicit val circeEnc: Encoder[Repository]   = circe.encoder.deriveMagnoliaEncoder
+  // implicit val circeDec: Decoder[Repository]   = circe.decoder.deriveMagnoliaDecoder
 }

@@ -40,7 +40,6 @@ object Args extends ArgsInstances {
   private val ownerOpt = Opts.argument[Repository.Owner]("owner")
   private val repoOpt  = Opts.argument[Repository.Name]("repo")
 
-  // Opts.subcommand("test", "fuuuuk")
 }
 
 trait ArgsInstances {

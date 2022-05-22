@@ -11,10 +11,12 @@ import dango.internal.derivation._
 final case class SearchResults(
     ok: Boolean,
     data: List[Repository]
-)
+) derives CirceEncoderObject,
+      CirceDecoder,
+      TapirSchema
 
-object SearchResults {
-  implicit val tapirSchema: Schema[SearchResults] = tapir.schema.derived
-  implicit val circeEnc: Encoder[SearchResults]   = circe.encoder.deriveMagnoliaEncoder
-  implicit val circeDec: Decoder[SearchResults]   = circe.decoder.deriveMagnoliaDecoder
-}
+//object SearchResults {
+// implicit val tapirSchema: Schema[SearchResults] = tapir.schema.derived
+// implicit val circeEnc: Encoder[SearchResults]   = circe.encoder.deriveMagnoliaEncoder
+// implicit val circeDec: Decoder[SearchResults]   = circe.decoder.deriveMagnoliaDecoder
+//}

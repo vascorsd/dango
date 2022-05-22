@@ -87,26 +87,27 @@ lazy val commonSettings = Seq(
     "-unchecked",
     "-deprecation",
     "-feature",
-    "-explaintypes",
+    "-explain-types",
+    "-Xfatal-warnings"
     // Needs to be on for macros to work. https://docs.scala-lang.org/overviews/macros/annotations.html
     // It means that removing makes the @newtype and @derive stop working.
-    "-Ymacro-annotations",
+    // "-Ymacro-annotations",
     // warns
-    "-Werror",
-    "-Wnumeric-widen",
-    "-Wvalue-discard",
-    "-Wdead-code",
-    "-Wextra-implicit",
+    // "-Werror",
+    // "-Wnumeric-widen",
+    // "-Wvalue-discard",
+    // "-Wdead-code",
+    // "-Wextra-implicit",
     // lints
-    "-Xlint",
+    // "-Xlint"
     // yet another not surprising scala bug yet again...
     // without this circe semiauto functions trigger
     // "Block result was adapted via implicit conversion (method apply) taking a by-name parameter",
     // https://users.scala-lang.org/t/2-13-3-by-name-implicit-linting-error/6334
-    "-Xlint:-byname-implicit",
+    // "-Xlint:-byname-implicit",
     // enable language features.
     // implicit conversions required for using newtype macro.
-    "-language:implicitConversions"
+    // "-language:implicitConversions"
   ),
   // some simple / saner scala project layout
   Compile / scalaSource       := baseDirectory.value / "src",
@@ -117,40 +118,41 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     // basic cats & fs2
     "org.typelevel" %% "cats-core"   % "2.7.0",
-    "org.typelevel" %% "cats-effect" % "3.3.3",
-    "co.fs2"        %% "fs2-core"    % "3.2.4",
-    "co.fs2"        %% "fs2-io"      % "3.2.4",
+    "org.typelevel" %% "cats-effect" % "3.3.11",
+    "co.fs2"        %% "fs2-core"    % "3.2.7",
+    "co.fs2"        %% "fs2-io"      % "3.2.7",
     // test libs
     "org.scalameta" %% "munit"               % "0.7.29" % Test,
     "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test,
     // config
-    "is.cir" %% "ciris" % "2.3.1",
+    "is.cir" %% "ciris" % "2.3.2",
     // sttp / tapir / sttp-client
-    "com.softwaremill.sttp.client"  %% "core"                   % "2.2.10",
-    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.3.18",
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "0.20.0-M4",
-    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.20.0-M4",
-    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.20.0-M4",
-    "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.20.0-M4",
+    "com.softwaremill.sttp.client3" %% "core"                   % "3.5.2",
+    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.5.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "1.0.0-M7",
+    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "1.0.0-M7",
+    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "1.0.0-M7",
+    // "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.20.0-M4",
     // circe stuff - json serialization
-    "io.circe" %% "circe-magnolia-derivation" % "0.7.0",
+    "io.circe" %% "circe-core" % "0.14.1",
+    // "io.circe" %% "circe-magnolia-derivation" % "0.7.0",
     // newtype - generate new types with a macro @newtype
-    // "io.monix" %% "newtypes-core" % "0.0.1",
-    "io.estatico" %% "newtype" % "0.4.4",
+    "io.monix" %% "newtypes-core" % "0.2.1",
+    // "io.estatico" %% "newtype" % "0.4.4",
     // printing good looking case classes
-    "com.lihaoyi" %% "pprint" % "0.7.1",
+    "com.lihaoyi" %% "pprint" % "0.7.3",
     // command line parser
     "com.monovore" %% "decline"        % "2.2.0",
     "com.monovore" %% "decline-effect" % "2.2.0"
-  ),
-  // compiler plugins
-  addCompilerPlugin(
-    "org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full
-  ),
-  addCompilerPlugin(
-    "com.olegpy" %% "better-monadic-for" % "0.3.1"
-  ),
-  addCompilerPlugin(
-    scalafixSemanticdb
   )
+  // compiler plugins
+  /*addCompilerPlugin(
+    "org.typelevel" %% "kind-projector" % "0.13.2" cross CrossVersion.full
+  ),*/
+  /*addCompilerPlugin(
+    "com.olegpy" %% "better-monadic-for" % "0.3.1"
+  ),*/
+  /*addCompilerPlugin(
+    scalafixSemanticdb
+  )*/
 )

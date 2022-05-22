@@ -14,19 +14,26 @@ final case class User(
     full_name: String,
     email: String,
     avatar_url: String
-)
+) derives CirceEncoderObject,
+      TapirSchema
 
 object User {
 
-  @io.estatico.newtype.macros.newtype
-  final case class Id(private val v: Int)
+  opaque type Id = Int
   object Id {
-    implicit val tapirSchema: Schema[Id] = deriving
-    implicit val circeEnc: Encoder[Id]   = deriving
-    implicit val circeDec: Decoder[Id]   = deriving
+    def make(v: Int): Id             = v
+    extension (v: Id) def value: Int = v
   }
 
-  implicit val tapirSchema: Schema[User] = tapir.schema.derived
-  implicit val circeEnc: Encoder[User]   = circe.encoder.deriveMagnoliaEncoder
-  implicit val circeDec: Decoder[User]   = circe.decoder.deriveMagnoliaDecoder
+  // @io.estatico.newtype.macros.newtype
+  // final case class Id(private val v: Int)
+  // object Id {
+  //   implicit val tapirSchema: Schema[Id] = deriving
+  //   implicit val circeEnc: Encoder[Id]   = deriving
+  //   implicit val circeDec: Decoder[Id]   = deriving
+  // }
+
+  // implicit val tapirSchema: Schema[User] = tapir.schema.derived
+  // implicit val circeEnc: Encoder[User]   = circe.encoder.deriveMagnoliaEncoder
+  // implicit val circeDec: Decoder[User]   = circe.decoder.deriveMagnoliaDecoder
 }
