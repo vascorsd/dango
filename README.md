@@ -6,6 +6,8 @@ SPDX-License-Identifier: CC-BY-SA-4.0
 
 ## TODO
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/256e5cb5e8df4e2cbc7d6b60f9515369)](https://app.codacy.com/gh/vascorsd/dango?utm_source=github.com&utm_medium=referral&utm_content=vascorsd/dango&utm_campaign=Badge_Grade_Settings)
+
 todo ...
 
 ## Contributing
