@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Vasco Dias <m+git@vascorsd.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 // SPDX-FileCopyrightText: 2022 Vasco Dias <m+git@vascorsd.com>
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
@@ -9,8 +13,8 @@ import cats.effect._
 import com.monovore.decline._
 import com.monovore.decline.effect.CommandIOApp
 import dango.cli.Operation.Repo
-import sttp.client3._
 import dango.gitea.client._
+import sttp.client3._
 import sttp.model.Uri
 
 object Main

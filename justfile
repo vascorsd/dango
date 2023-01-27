@@ -2,91 +2,62 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
-set shell := ["bash", "-c", "-x"]
+author := "Vasco Dias <m+git@vascorsd.com>"
 
 # tools bins:
+sbt-cmd := 'sbt --supershell=never --color=always'
 
-SBT := 'sbt --client'
+_default:
+    just --list
 
-default: clean compile
+## Basic clean & compile & run cycle: ----
 
-compile TARGET='':
-    @if [ "{{ TARGET }}" == "" ]; then \
-        {{ SBT }} compile; \
-    else \
-        {{ SBT }} "{{ TARGET }} / compile"; \
-    fi
+clean module='':
+    {{ sbt-cmd }} "{{ if module != "" { module + " / " } else { "" } }} clean"
 
-run APP ARGS='':
-    {{ SBT }} "{{ APP }} / run {{ ARGS }}"
+compile module='':
+    {{ sbt-cmd }} "{{ if module != "" { module + " / " } else { "" } }} compile"
+    
+run app *args:
+    {{ sbt-cmd }} "{{ app }} / run {{ args }}"
 
-clean TARGET='':
-    @if [ "{{ TARGET }}" == "" ]; then \
-        {{ SBT }} clean; \
-    else \
-        {{ SBT }} "{{ TARGET }} / clean"; \
-    fi
+clean-force mode='':
+    echo 'Removing build related artifacts...'
+    rm --recursive --force --verbose build out target .target
 
-clean-force MODE='':
-    @echo 'Removing build related artifacts...'
-    @rm --recursive --force --verbose build out target .target
-
-    @if [ "{{ MODE }}" == "all" ]; then \
+    if [ "{{ mode }}" == "all" ]; then \
         echo 'Removing extra stuff from workspace...'; \
         rm --recursive --force --verbose .bloop .bsp .metals .idea .idea_modules .vscode; \
     fi
 
-format TARGET='':
-    @if [ "{{ TARGET }}" == "" ]; then \
-        {{ SBT }} "scalafmtSbt;scalafmtAll"; \
-    else \
-        {{ SBT }} "{{ TARGET }} / scalafmtAll"; \
-    fi
+## Code health: -----------------------
 
-format-check TARGET='':
-    @if [ "{{ TARGET }}" == "" ]; then \
-        {{ SBT }} "scalafmtSbtCheck;scalafmtCheckAll"; \
-    else \
-        {{ SBT }} "{{ TARGET }} / scalafmtCheckAll"; \
-    fi
+format module='':
+    {{ sbt-cmd }} "{{ if module != "" { module + " / scalafmtAll" } else { "scalafmtSbt; scalafmtAll" } }}"
 
-fix TARGET='':
-    @if [ "{{ TARGET }}" == "" ]; then \
-        {{ SBT }} "scalafixAll"; \
-    else \
-        {{ SBT }} "{{ TARGET }} / scalafixAll"; \
-    fi
+format-check module='':
+    {{ sbt-cmd }} "{{ if module != "" { module + " / scalafmtCheckAll" } else { "scalafmtSbtCheck; scalafmtCheckAll" } }}"
 
-fix-check TARGET='':
-    @if [ "{{ TARGET }}" == "" ]; then \
-        {{ SBT }} "scalafixAll --check"; \
-    else \
-        {{ SBT }} "{{ TARGET }} / scalafixAll --check"; \
-    fi
+fix module='':
+    {{ sbt-cmd }} "{{ if module != "" { module + " / " } else { "" } }} scalafixAll"
+
+fix-check module='':
+    {{ sbt-cmd }} "{{ if module != "" { module + " / " } else { "" } }} scalafixAll --check"
 
 updates-check:
-    {{ SBT }} dependencyUpdates
+    {{ sbt-cmd }} "dependencyUpdates"
+
+## Licensing stuff: ---------------------
 
 licenses-check:
     reuse lint
 
-licenses-add-agpl-to FILES STYLE='':
-    @if [ "{{ STYLE }}" == "" ]; then \
-        reuse addheader --copyright="Vasco Dias <m+git@vascorsd.com>" --license="AGPL-3.0-or-later" {{ FILES }}; \
-    else \
-        reuse addheader --copyright="Vasco Dias <m+git@vascorsd.com>" --license="AGPL-3.0-or-later" --style="{{ STYLE }}" {{ FILES }}; \
-    fi
+licenses-add-agpl-to +files:
+    reuse annotate --copyright="{{ author }}" --license="AGPL-3.0-or-later" {{ files }}
 
-licenses-add-cc-by-sa-to FILES STYLE='':
-    @if [ "{{ STYLE }}" == "" ]; then \
-        reuse addheader --copyright="Vasco Dias <m+git@vascorsd.com>" --license="CC-BY-SA-4.0" {{ FILES }}; \
-    else \
-        reuse addheader --copyright="Vasco Dias <m+git@vascorsd.com>" --license="CC-BY-SA-4.0" --style="{{ STYLE }}" {{ FILES }}; \
-    fi
+licenses-add-cc-by-sa-to +files :
+    reuse annotate --copyright="{{ author }}" --license="CC-BY-SA-4.0" {{ files }}
 
-licenses-add-cc0-to FILES STYLE='':
-    @if [ "{{ STYLE }}" == "" ]; then \
-        reuse addheader --copyright="Vasco Dias <m+git@vascorsd.com>" --license="CC0-1.0" {{ FILES }}; \
-    else \
-        reuse addheader --copyright="Vasco Dias <m+git@vascorsd.com>" --license="CC0-1.0" --style="{{ STYLE }}" {{ FILES }}; \
-    fi
+licenses-add-cc0-to +files:
+    reuse annotate --copyright="{{ author }}" --license="CC0-1.0" {{ files }}
+

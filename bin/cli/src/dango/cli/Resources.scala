@@ -1,11 +1,15 @@
+# SPDX-FileCopyrightText: 2023 Vasco Dias <m+git@vascorsd.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 package dango.cli
 
 import cats.effect._
-import sttp.capabilities.fs2.Fs2Streams
-import sttp.capabilities.WebSockets
-import sttp.client3.httpclient.fs2.HttpClientFs2Backend
-import sttp.client3.SttpBackend
 import cats.implicits._
+import sttp.capabilities.WebSockets
+import sttp.capabilities.fs2.Fs2Streams
+import sttp.client3.SttpBackend
+import sttp.client3.httpclient.fs2.HttpClientFs2Backend
 
 case class Resources[F[_]](
     sttpBackend1: SttpBackend[F, Fs2Streams[F] with WebSockets],

@@ -4,9 +4,8 @@
 
 package dango.gitea.client
 
-import dango.gitea.api.v1.repos._
 import dango.gitea.api.v1.endpoints._
-
+import dango.gitea.api.v1.repos._
 import sttp.client3._
 import sttp.model.Uri
 import sttp.tapir.DecodeResult

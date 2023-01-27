@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2023 Vasco Dias <m+git@vascorsd.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 package dango.gitea.client.algebra
 import cats.effect.IO
 import dango.gitea.api.v1.repos._

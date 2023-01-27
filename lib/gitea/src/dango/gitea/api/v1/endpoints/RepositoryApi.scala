@@ -6,7 +6,6 @@ package dango.gitea.api.v1
 package endpoints
 
 import dango.gitea.api.v1.repos._
-
 import sttp.tapir._
 import sttp.tapir.codec.newtype._
 import sttp.tapir.json.circe.jsonBody

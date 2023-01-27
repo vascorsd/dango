@@ -117,28 +117,28 @@ lazy val commonSettings = Seq(
   libraryDependencies ++= Seq(
     // basic cats & fs2
     "org.typelevel" %% "cats-core"   % "2.7.0",
-    "org.typelevel" %% "cats-effect" % "3.3.3",
-    "co.fs2"        %% "fs2-core"    % "3.2.4",
-    "co.fs2"        %% "fs2-io"      % "3.2.4",
+    "org.typelevel" %% "cats-effect" % "3.3.11",
+    "co.fs2"        %% "fs2-core"    % "3.2.7",
+    "co.fs2"        %% "fs2-io"      % "3.2.7",
     // test libs
     "org.scalameta" %% "munit"               % "0.7.29" % Test,
     "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test,
     // config
-    "is.cir" %% "ciris" % "2.3.1",
+    "is.cir" %% "ciris" % "2.3.2",
     // sttp / tapir / sttp-client
-    "com.softwaremill.sttp.client"  %% "core"                   % "2.2.10",
-    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.3.18",
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "0.20.0-M4",
-    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.20.0-M4",
-    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.20.0-M4",
-    "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.20.0-M4",
+    "com.softwaremill.sttp.client"  %% "core"                   % "2.3.0",
+    "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.5.2",
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"             % "0.20.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-sttp-client"      % "0.20.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-json-circe"       % "0.20.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-derevo"           % "0.20.1",
     // circe stuff - json serialization
     "io.circe" %% "circe-magnolia-derivation" % "0.7.0",
     // newtype - generate new types with a macro @newtype
     // "io.monix" %% "newtypes-core" % "0.0.1",
     "io.estatico" %% "newtype" % "0.4.4",
     // printing good looking case classes
-    "com.lihaoyi" %% "pprint" % "0.7.1",
+    "com.lihaoyi" %% "pprint" % "0.7.3",
     // command line parser
     "com.monovore" %% "decline"        % "2.2.0",
     "com.monovore" %% "decline-effect" % "2.2.0"

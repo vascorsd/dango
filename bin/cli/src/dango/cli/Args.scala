@@ -1,7 +1,12 @@
+# SPDX-FileCopyrightText: 2023 Vasco Dias <m+git@vascorsd.com>
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
 package dango.cli
 
-import com.monovore.decline.{Command, Opts}
 import cats.syntax.all._
+import com.monovore.decline.Command
+import com.monovore.decline.Opts
 import dango.cli.Operation.Repo
 
 import java.net.URI
