@@ -118,13 +118,13 @@ lazy val commonSettings = Seq(
     // basic cats & fs2
     "org.typelevel" %% "cats-core"   % "2.7.0",
     "org.typelevel" %% "cats-effect" % "3.3.11",
-    "co.fs2"        %% "fs2-core"    % "3.2.7",
-    "co.fs2"        %% "fs2-io"      % "3.2.7",
+    "co.fs2"        %% "fs2-core"    % "3.5.0",
+    "co.fs2"        %% "fs2-io"      % "3.5.0",
     // test libs
     "org.scalameta" %% "munit"               % "0.7.29" % Test,
     "org.typelevel" %% "munit-cats-effect-3" % "1.0.7"  % Test,
     // config
-    "is.cir" %% "ciris" % "2.3.2",
+    "is.cir" %% "ciris" % "3.0.0",
     // sttp / tapir / sttp-client
     "com.softwaremill.sttp.client"  %% "core"                   % "2.3.0",
     "com.softwaremill.sttp.client3" %% "httpclient-backend-fs2" % "3.5.2",
@@ -138,10 +138,10 @@ lazy val commonSettings = Seq(
     // "io.monix" %% "newtypes-core" % "0.0.1",
     "io.estatico" %% "newtype" % "0.4.4",
     // printing good looking case classes
-    "com.lihaoyi" %% "pprint" % "0.7.3",
+    "com.lihaoyi" %% "pprint" % "0.8.1",
     // command line parser
-    "com.monovore" %% "decline"        % "2.2.0",
-    "com.monovore" %% "decline-effect" % "2.2.0"
+    "com.monovore" %% "decline"        % "2.4.1",
+    "com.monovore" %% "decline-effect" % "2.4.1"
   ),
   // compiler plugins
   addCompilerPlugin(
