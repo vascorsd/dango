@@ -1,6 +1,6 @@
-# SPDX-FileCopyrightText: 2023 Vasco Dias <m+git@vascorsd.com>
-#
-# SPDX-License-Identifier: AGPL-3.0-or-later
+// SPDX-FileCopyrightText: 2023 Vasco Dias <m+git@vascorsd.com>
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
 
 package dango.cli
 
